@@ -1,0 +1,107 @@
+# ------------------------------------------------------------------------------
+# GENERATED / ENFORCED BY STAGEFREIGHT GOVERNANCE
+# Source repo: PrPlanIT/MaintenancePolicy
+# Profile: hlhd-docker
+# This .stagefreight.yml is governed, not purely local.
+# To disable governance, detach from the control repo workflow.
+# Manual changes may be overwritten by reconciliation.
+# ------------------------------------------------------------------------------
+
+version: 1
+builds:
+  image:
+    build_args:
+      ADDONS_REF: "11.4"
+      HUBZILLA_REF: "11.4"
+      PHP_VERSION: "8.3"
+    context: .
+    dockerfile: Dockerfile
+    kind: docker
+    platforms:
+      - linux/amd64
+scribe:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/scribe-docker.yml
+lint:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/lint-generic.yml
+security:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/security.yml
+dependency:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/dependency.yml
+commit:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/commit.yml
+release:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/release.yml
+manifest:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/manifest.yml
+build_cache:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/build_cache.yml
+ci:
+  forge:
+    - gitlab
+  image: docker.cr.pcfae.com/prplanit/stagefreight:latest-dev
+forges:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/forges.yml
+git:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/git.yml
+metadata:
+  category: applications
+  description:
+    - Hubzilla and its official addons, built at a pinned upstream revision.
+    - Container image for Hubzilla, a federated social platform with nomadic identity and per-object permissions, carrying the official addon set so ActivityPub federation is available rather than Zot alone.
+  license: MIT
+  org: HomeLabHD
+  title: Hubzilla
+  topics:
+    - hubzilla
+    - fediverse
+    - activitypub
+    - zot
+    - nomadic-identity
+    - docker
+orgs:
+  HomeLabHD:
+    aliases:
+      docker: hlhd
+      ghcr: homelabhd
+      github: HomeLabHD
+      handle: hlhd
+    maintainer: HomeLabHD <homelabhelp@gmail.com>
+publish:
+  dev:
+    tags:
+      - dev-{sha:8}
+      - latest-dev
+      - latest-v11-dev
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/publish-docker.yml
+  stable:
+    tags:
+      - v{version}
+      - latest
+      - latest-v11
+registries:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/registries.yml
+repos:
+  github-mirror:
+    forge: github
+    project: HomeLabHD/hubzilla
+    roles:
+      - mirror
+      - publish-origin
+    sync:
+      git: true
+      releases: true
+  primary:
+    branches:
+      default: main
+    forge: gitlab
+    project: HomeLabHD/hubzilla
+    roles:
+      - primary
+    worktree: .
+stencils:
+  presets:
+    - https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/stencils-base.yml
+    - https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/stencils-status.yml
+    - https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/stencils-docker.yml
+toolchains:
+  preset: https://gitlab.prplanit.com/PrPlanIT/MaintenancePolicy//preset/toolchains.yml
