@@ -1,0 +1,23 @@
+{
+  "_comment": [
+    "Upstream lives only on framagit, which drops this network's egress and has no",
+    "maintained third-party mirror. These point at HomeLabHD's own mirrors so a build",
+    "never depends on Framasoft being both up and willing to talk to us.",
+    "Refreshing the mirrors tracks upstream; bumping a ref here is what ships it."
+  ],
+  "core": {
+    "repo": "https://github.com/HomeLabHD/hubzilla-core.git",
+    "mirror_of": "https://framagit.org/hubzilla/core.git",
+    "ref": "11.4"
+  },
+  "addons": {
+    "_comment": "Pubcrawl lives here; without addons Hubzilla speaks Zot only, no ActivityPub.",
+    "repo": "https://github.com/HomeLabHD/hubzilla-addons.git",
+    "mirror_of": "https://framagit.org/hubzilla/addons.git",
+    "ref": "11.4"
+  },
+  "themes": {
+    "repo": "",
+    "ref": ""
+  }
+}
