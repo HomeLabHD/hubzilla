@@ -44,31 +44,22 @@ mounted read-only. Three paths are genuinely written and must be mounts:
 | `/var/www/html/.htconfig.php` | Site configuration — mount read-only from a secret |
 | `/tmp` | PHP session and upload scratch |
 
-## Web server
+## Behind a proxy
 
-Hubzilla reads the requested path from a **`q` query parameter**, per its own `.htaccess`.
-Rewriting to `index.php` without carrying the path is the single most common way to break a
-deployment: every routed request renders the home page, which looks like a stylesheet problem
-but is actually breaking channels, profiles, `.well-known` discovery and ActivityPub delivery
-at the same time.
+The image serves HTTP on **8080** with nginx and php-fpm already configured — Hubzilla's
+routing rules are the application's, not the operator's, so they travel with it in
+[`rootfs/nginx.conf`](../rootfs/nginx.conf). Terminate TLS in front of it and forward:
 
-```nginx
-location ^~ /store/ { deny all; return 404; }
+| Header | Why |
+|--------|-----|
+| `X-Forwarded-Proto` | Hubzilla marks its session cookie `SameSite=None` and only adds `Secure` when PHP sees HTTPS. Browsers discard a `SameSite=None` cookie that is not `Secure`, so without this every request starts a new session and logins and registrations fail with no error |
+| `X-Forwarded-For` | A hub records the address behind every registration, login and report. Private-range proxies are trusted; anything else is ignored |
 
-location / {
-    try_files $uri $uri/ /index.php?q=$uri&$args;
-}
+Assume HTTPS when `X-Forwarded-Proto` is absent, so a proxy that omits it fails safe rather
+than silently breaking sessions.
 
-location ~ \.php$ {
-    fastcgi_pass 127.0.0.1:9000;
-    fastcgi_index index.php;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-}
-```
-
-`client_max_body_size` must be at least the `upload_max_filesize` compiled into the image
-(100M) or large uploads are rejected before PHP sees them.
+Uploads are capped at 100M in both nginx and PHP. Raising one means raising the other, and
+the proxy's own body limit as well.
 
 ## Background jobs
 

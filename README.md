@@ -18,7 +18,7 @@ A **rootless** container image for [Hubzilla](https://hubzilla.org/) — the fed
 
 | Topic | |
 |-------|-|
-| [Configuration](docs/Configuration.md) | Environment reference, writable paths, database, and the web-server rewrite Hubzilla requires |
+| [Configuration](docs/Configuration.md) | Environment reference, writable paths, database, proxy requirements and background jobs |
 
 ### What Hubzilla is
 
@@ -38,7 +38,8 @@ A **rootless** container image for [Hubzilla](https://hubzilla.org/) — the fed
 | **Pinned build**       | Core + addons are fetched at a fixed ref during `docker build`. The running version is the tag you deployed, not whatever upstream `master` was when the pod last restarted |
 | **Rootless**           | Runs as `www-data` with a read-only root filesystem — the only writable paths are mounts               |
 | **Mail that leaves**   | An `msmtp` `sendmail` shim reads `SMTP_*` from the environment at send time, so registration, password resets and notifications work and no relay password lands in a layer |
-| **php-fpm only**       | No bundled web server, no supervisor — front it with your own nginx/Caddy and scale the pod, not the process tree |
+| **Routing ships with it** | Hubzilla routes on a `q=` parameter, answers `.well-known` from `index.php`, and needs the `Authorization` header for DAV. Those are the app's rules, so nginx and its config are in the image — not retyped into every deployment, and not left behind by an upgrade |
+| **Serves HTTP directly** | nginx + php-fpm under tini on port 8080. One container, no sidecar, no supervisor |
 
 ## Image contents
 
@@ -52,7 +53,7 @@ Base Image:
 
 PHP extensions: `gd` (freetype + jpeg), `pdo`, `pdo_mysql`, `zip`, `exif`, `intl`, `bcmath`, `gmp`, `imagick`
 
-Packages (apt): `imagemagick`, `msmtp`, `libzip4`
+Packages (apt): `nginx`, `tini`, `imagemagick`, `msmtp`, `libzip4`
 
 Pinned components — see [`components.json`](components.json):
 
@@ -85,7 +86,7 @@ docker build -t hlhd/hubzilla \
   --build-arg ADDONS_REF=11.4 .
 ```
 
-Hubzilla needs a MySQL/MariaDB or PostgreSQL database, a mounted `.htconfig.php`, and persistent storage for `store/`. The container serves **php-fpm on 9000** — put nginx in front of it, and note that Hubzilla routes on a `q=` query parameter rather than the request path, so the rewrite is not optional. All of it is in [Configuration](docs/Configuration.md).
+Hubzilla needs a MySQL/MariaDB or PostgreSQL database, a mounted `.htconfig.php`, and persistent storage for `store/`. The container serves **HTTP on 8080** and needs no web server in front of it beyond your TLS terminator — pass `X-Forwarded-Proto`, or the session cookie is issued without `Secure` and browsers discard it. All of it is in [Configuration](docs/Configuration.md).
 
 ## Contributing
 
