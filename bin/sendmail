@@ -11,5 +11,4 @@ exec /usr/bin/msmtp \
   --user="${SMTP_USER:?SMTP_USER is not set}" \
   --passwordeval="printf '%s' \"\$SMTP_PASSWORD\"" \
   --from="${SMTP_FROM:-$SMTP_USER}" \
-  --read-envelope-from=off \
   "$@"
