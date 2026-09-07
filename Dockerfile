@@ -30,6 +30,16 @@ RUN set -eux; \
     if [ -n "${THEMES_REPO:-}" ]; then \
       git clone --depth 1 --branch "${THEMES_REF}" "${THEMES_REPO}" /src/extend/theme/extra-themes; \
     fi; \
+    # Hubzilla loads an addon from addon/<name>/<name>.php and nowhere else, so a cloned
+    # repo is invisible until each addon inside it is linked into addon/. This is what
+    # util/add_addon_repo does after its clone; without it the bundled set — pubcrawl,
+    # which is the whole ActivityPub story, included — is present but unusable.
+    mkdir -p /src/addon; \
+    for dir in /src/extend/addon/addons-official/*/; do \
+      [ -d "$dir" ] || continue; \
+      name="$(basename "$dir")"; \
+      ln -sfn "../extend/addon/addons-official/$name" "/src/addon/$name"; \
+    done; \
     find /src -name .git -type d -prune -exec rm -rf {} +
 
 FROM php:${PHP_VERSION}-fpm-bookworm
