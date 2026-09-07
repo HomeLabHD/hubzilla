@@ -1,0 +1,15 @@
+#!/bin/sh
+# msmtp is configured from the environment rather than a config file so the relay
+# password is never written to disk. Hubzilla calls this as PHP's sendmail_path.
+set -eu
+exec /usr/bin/msmtp \
+  --host="${SMTP_HOST:-smtp.gmail.com}" \
+  --port="${SMTP_PORT:-587}" \
+  --tls=on \
+  --tls-starttls=on \
+  --auth=on \
+  --user="${SMTP_USER:?SMTP_USER is not set}" \
+  --passwordeval="printf '%s' \"\$SMTP_PASSWORD\"" \
+  --from="${SMTP_FROM:-$SMTP_USER}" \
+  --read-envelope-from=off \
+  "$@"

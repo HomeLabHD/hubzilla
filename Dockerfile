@@ -38,16 +38,26 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
       libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libicu-dev libgmp-dev \
-      libmagickwand-dev imagemagick; \
+      libmagickwand-dev imagemagick msmtp; \
     docker-php-ext-configure gd --with-freetype --with-jpeg; \
     docker-php-ext-install -j"$(nproc)" gd pdo pdo_mysql zip exif intl bcmath gmp; \
     pecl install imagick; \
     docker-php-ext-enable imagick; \
     apt-get purge -y --auto-remove libmagickwand-dev libpng-dev libjpeg-dev \
       libfreetype6-dev libzip-dev libicu-dev libgmp-dev; \
+    # Purging the -dev packages takes libzip's runtime with them, and an extension
+    # built against a library that is no longer present fails to load at startup.
+    apt-get install -y --no-install-recommends libzip4; \
     rm -rf /var/lib/apt/lists/*
 
 COPY php/hubzilla.ini /usr/local/etc/php/conf.d/hubzilla.ini
+
+# Hubzilla sends through PHP's mail(), which needs a sendmail binary the php image
+# does not carry: without one, registration, password resets and every notification
+# fail. msmtp relays instead, reading credentials from the environment at send time so
+# nothing lands in an image layer.
+COPY php/msmtp.ini /usr/local/etc/php/conf.d/msmtp.ini
+COPY bin/sendmail /usr/local/bin/sendmail
 
 # Code is owned by root and never written to at runtime. The three paths Hubzilla
 # genuinely writes — uploads, compiled templates, and its config — are mounted in, so
