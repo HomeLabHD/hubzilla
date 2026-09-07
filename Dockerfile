@@ -38,7 +38,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
       libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libicu-dev libgmp-dev \
-      libmagickwand-dev imagemagick msmtp; \
+      libmagickwand-dev imagemagick msmtp nginx tini; \
     docker-php-ext-configure gd --with-freetype --with-jpeg; \
     docker-php-ext-install -j"$(nproc)" gd pdo pdo_mysql zip exif intl bcmath gmp; \
     pecl install imagick; \
@@ -51,6 +51,16 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 COPY php/hubzilla.ini /usr/local/etc/php/conf.d/hubzilla.ini
+
+# Hubzilla routes on a q= query parameter, answers discovery out of index.php, and needs the
+# Authorization header for DAV — rules that belong to the application, not to whoever deploys
+# it. They travel with the code so an upgrade cannot leave them behind.
+COPY rootfs/nginx.conf            /etc/nginx/nginx.conf
+COPY rootfs/php-fpm-hubzilla.conf /usr/local/etc/php-fpm.d/zz-hubzilla.conf
+COPY rootfs/web-run.sh            /usr/local/bin/web-run.sh
+RUN set -eux; \
+    chmod +x /usr/local/bin/web-run.sh; \
+    rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf
 
 # Hubzilla sends through PHP's mail(), which needs a sendmail binary the php image
 # does not carry: without one, registration, password resets and every notification
@@ -71,5 +81,6 @@ RUN set -eux; \
 
 WORKDIR /var/www/html
 USER www-data
-EXPOSE 9000
-CMD ["php-fpm"]
+EXPOSE 8080
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["web-run.sh"]
