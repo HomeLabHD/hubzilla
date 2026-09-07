@@ -3,10 +3,15 @@
 A **rootless** container image for [Hubzilla](https://hubzilla.org/) — the federated social platform built around **nomadic identity**: a channel is a portable, cryptographically-owned thing that can live on several hubs at once, so an account outlives the server it was created on. Hubzilla speaks its native **Zot** protocol *and* **ActivityPub** (Mastodon, Pixelfed, Lemmy, …), and puts an **access-control list on every object** — each post, photo, file, wiki page and event. Core and the official addon set are cloned at a **pinned upstream ref at build time** and baked in.
 
 <!-- sf:project:start -->
+[![GitHub](https://img.shields.io/badge/GitHub-mirror-181717?logo=github)](https://github.com/HomeLabHD/hubzilla) [![GitLab](https://img.shields.io/badge/GitLab-source-FC6D26?logo=gitlab)](https://gitlab.prplanit.com/HomeLabHD/hubzilla) [![license](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/license.svg)](https://github.com/HomeLabHD/hubzilla/blob/main/LICENSE) [![Open Issues](https://img.shields.io/github/issues/HomeLabHD/hubzilla)](https://github.com/HomeLabHD/hubzilla/issues) [![Open PRs](https://img.shields.io/github/issues-pr/HomeLabHD/hubzilla)](https://github.com/HomeLabHD/hubzilla/pulls) [![Contributors](https://img.shields.io/github/contributors/HomeLabHD/hubzilla)](https://github.com/HomeLabHD/hubzilla/graphs/contributors) [![donate](https://img.shields.io/badge/donate-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/T6T41IT163) [![sponsor](https://img.shields.io/badge/sponsor-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/HomeLabHD)
 <!-- sf:project:end -->
 <!-- sf:badges:start -->
+[![release](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/release.svg)](https://github.com/HomeLabHD/hubzilla/releases) [![build](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/build.svg)](https://gitlab.prplanit.com/HomeLabHD/hubzilla/-/pipelines) [![Last Commit](https://img.shields.io/github/last-commit/HomeLabHD/hubzilla)](https://github.com/HomeLabHD/hubzilla/commits) [![StageFreight](https://img.shields.io/badge/StageFreight-0.11.0--dev+279c6c6-310937?logo=readthedocs&logoColor=white)](https://stagefreight.prplanit.com)
 <!-- sf:badges:end -->
 <!-- sf:image:start -->
+[![GHCR](https://img.shields.io/badge/GHCR-homelabhd%2Fhubzilla-181717?logo=github&logoColor=white)](https://github.com/HomeLabHD/hubzilla/pkgs/container/hubzilla) [![Docker](https://img.shields.io/badge/Docker-hlhd%2Fhubzilla-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/hlhd/hubzilla) [![pulls](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/pulls.svg)](https://hub.docker.com/r/hlhd/hubzilla) [![Harbor](https://img.shields.io/badge/Harbor-hlhd%2Fhubzilla-60b932)](https://cr.pcfae.com/harbor/projects)
+
+[![latest](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/release-latest.svg)](https://github.com/HomeLabHD/hubzilla/pkgs/container/hubzilla) ![updated](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/release-updated.svg) [![size](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/release-size.svg)](https://github.com/HomeLabHD/hubzilla/pkgs/container/hubzilla) [![latest-dev](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/dev-latest.svg)](https://github.com/HomeLabHD/hubzilla/pkgs/container/hubzilla) ![updated](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/dev-updated.svg) [![size](https://raw.githubusercontent.com/HomeLabHD/hubzilla/main/.stagefreight/scribe/dev-size.svg)](https://github.com/HomeLabHD/hubzilla/pkgs/container/hubzilla)
 <!-- sf:image:end -->
 
 ### Documentation
@@ -42,6 +47,7 @@ A **rootless** container image for [Hubzilla](https://hubzilla.org/) — the fed
 
 Base Image:
 <!-- sf:contents-base:start -->
+[![php 8.3](https://img.shields.io/badge/php-8.3-0078D4?style=flat)](https://hub.docker.com/_/php)
 <!-- sf:contents-base:end -->
 
 PHP extensions: `gd` (freetype + jpeg), `pdo`, `pdo_mysql`, `zip`, `exif`, `intl`, `bcmath`, `gmp`, `imagick`
