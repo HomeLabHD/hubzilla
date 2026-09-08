@@ -1,4 +1,4 @@
-# 🛸 hubzilla
+# hubzilla
 
 A **rootless** container image for [Hubzilla](https://hubzilla.org/) — the federated social platform built around **nomadic identity**: a channel is a portable, cryptographically-owned thing that can live on several hubs at once, so an account outlives the server it was created on. Hubzilla speaks its native **Zot** protocol *and* **ActivityPub** (Mastodon, Pixelfed, Lemmy, …), and puts an **access-control list on every object** — each post, photo, file, wiki page and event. Core and the official addon set are cloned at a **pinned upstream ref at build time** and baked in.
 
