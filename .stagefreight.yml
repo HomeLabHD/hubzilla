@@ -11,8 +11,8 @@ version: 1
 builds:
   image:
     build_args:
-      ADDONS_REF: "11.4"
-      HUBZILLA_REF: "11.4"
+      ADDONS_REF: "11.4.1"
+      HUBZILLA_REF: "11.4.1"
       PHP_VERSION: "8.3"
     context: .
     dockerfile: Dockerfile
