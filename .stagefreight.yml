@@ -13,7 +13,7 @@ builds:
     build_args:
       ADDONS_REF: 11.4.2
       HUBZILLA_REF: 11.4.2
-      PHP_VERSION: "8.3"
+      PHP_VERSION: 8.3.36
     context: .
     dockerfile: Dockerfile
     kind: docker
