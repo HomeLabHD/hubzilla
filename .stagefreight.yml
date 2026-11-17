@@ -11,8 +11,6 @@ version: 1
 builds:
   image:
     build_args:
-      ADDONS_REF: 11.4.2
-      HUBZILLA_REF: 11.4.2
       PHP_VERSION: 8.3.36
     context: .
     dockerfile: Dockerfile
@@ -98,6 +96,8 @@ repos:
     roles:
       - primary
     worktree: .
+schedules:
+  preset: https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/schedules-upstream.yml
 stencils:
   presets:
     - https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/stencils-base.yml
@@ -108,3 +108,29 @@ toolchains:
   want:
     presets:
       - https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/toolchains-scanners.yml
+upstream:
+  evidence:
+    image:
+      probe:
+        file: /var/www/html/boot.php
+        match: STD_VERSION', '(?P<version>[0-9.]+)'
+  sources:
+    addons:
+      git: https://github.com/HomeLabHD/hubzilla-addons.git
+      mirror_of: https://framagit.org/hubzilla/addons.git
+      pins:
+        - arg: ADDONS_REF
+          file: Dockerfile
+        - file: components.json
+          path: addons.ref
+    core:
+      git: https://github.com/HomeLabHD/hubzilla-core.git
+      mirror_of: https://framagit.org/hubzilla/core.git
+      pins:
+        - arg: HUBZILLA_REF
+          file: Dockerfile
+        - file: components.json
+          path: core.ref
+  version:
+    since: v11.4.2
+    track: core
