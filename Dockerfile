@@ -9,9 +9,9 @@ FROM php:${PHP_VERSION}-cli-bookworm AS source
 # Every ref is pinned. A moving ref here would reintroduce exactly the problem this
 # image exists to remove.
 ARG HUBZILLA_REPO=https://github.com/HomeLabHD/hubzilla-core.git
-ARG HUBZILLA_REF
+ARG HUBZILLA_REF=11.4.2
 ARG ADDONS_REPO=https://github.com/HomeLabHD/hubzilla-addons.git
-ARG ADDONS_REF
+ARG ADDONS_REF=11.4.2
 ARG THEMES_REPO=""
 ARG THEMES_REF=""
 

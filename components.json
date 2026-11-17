@@ -8,13 +8,13 @@
   "core": {
     "repo": "https://github.com/HomeLabHD/hubzilla-core.git",
     "mirror_of": "https://framagit.org/hubzilla/core.git",
-    "ref": "11.4"
+    "ref": "11.4.2"
   },
   "addons": {
     "_comment": "Pubcrawl lives here; without addons Hubzilla speaks Zot only, no ActivityPub.",
     "repo": "https://github.com/HomeLabHD/hubzilla-addons.git",
     "mirror_of": "https://framagit.org/hubzilla/addons.git",
-    "ref": "11.4"
+    "ref": "11.4.2"
   },
   "themes": {
     "repo": "",
