@@ -14,9 +14,6 @@ builds:
       PHP_VERSION: 8.3.36
     context: .
     dockerfile: Dockerfile
-    kind: docker
-    platforms:
-      - linux/amd64
   preset: https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/build-docker.yml
 scribe:
   preset: https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/scribe-docker.yml
@@ -47,7 +44,6 @@ metadata:
   description:
     - Hubzilla and its official addons, built at a pinned upstream revision.
     - Container image for Hubzilla, a federated social platform with nomadic identity and per-object permissions, carrying the official addon set so ActivityPub federation is available rather than Zot alone.
-  license: MIT
   org: HomeLabHD
   title: Hubzilla
   topics:
@@ -132,5 +128,4 @@ upstream:
         - file: components.json
           path: core.ref
   version:
-    since: v11.4.2
     track: core
