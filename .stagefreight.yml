@@ -17,6 +17,7 @@ builds:
     kind: docker
     platforms:
       - linux/amd64
+  preset: https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/build-docker.yml
 scribe:
   preset: https://git.optcp.com/PrPlanIT/MaintenancePolicy//preset/scribe-docker.yml
 lint:
@@ -111,9 +112,8 @@ toolchains:
 upstream:
   evidence:
     image:
-      probe:
-        file: /var/www/html/boot.php
-        match: STD_VERSION', '(?P<version>[0-9.]+)'
+      file: /var/www/html/boot.php
+      match: STD_VERSION', '(?P<version>[0-9.]+)'
   sources:
     addons:
       git: https://github.com/HomeLabHD/hubzilla-addons.git
